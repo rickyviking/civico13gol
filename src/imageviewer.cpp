@@ -58,8 +58,39 @@ ImageViewer::ImageViewer()
     createActions();
     createMenus();
 
-    setWindowTitle(tr("Image Viewer"));
-    resize(500, 400);
+
+
+    // try to add a graphics scene+window with 4 squares 
+    // in overlay to the image
+
+    QGraphicsRectWidget *button1 = new QGraphicsRectWidget;
+    QGraphicsRectWidget *button2 = new QGraphicsRectWidget;
+    QGraphicsRectWidget *button3 = new QGraphicsRectWidget;
+    QGraphicsRectWidget *button4 = new QGraphicsRectWidget;
+    button2->setZValue(1);
+    button3->setZValue(2);
+    button4->setZValue(3);
+
+    _pScene= new QGraphicsScene(0, 0, 500, 500);
+    //scene.setBackgroundBrush(Qt::black);
+    _pScene->addItem(button1);
+    _pScene->addItem(button2);
+    _pScene->addItem(button3);
+    _pScene->addItem(button4);
+    
+    QGraphicsView* pGraphicsView = new QGraphicsView(_pScene);
+    pGraphicsView->setFrameStyle(0);
+    pGraphicsView->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+    pGraphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    pGraphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    setCentralWidget(pGraphicsView);
+
+
+
+
+    setWindowTitle(tr("Civico13-GOL"));
+    resize(800, 600);
 }
 //! [0]
 
@@ -77,8 +108,16 @@ void ImageViewer::open()
             return;
         }
 //! [2] //! [3]
-        imageLabel->setPixmap(QPixmap::fromImage(image));
-//! [3] //! [4]
+        //imageLabel->setPixmap(QPixmap::fromImage(image));
+
+        QGraphicsPixmapItem* pImageItem = new QGraphicsPixmapItem;
+        pImageItem->setPixmap(QPixmap::fromImage(image));
+        // use 0 as background level...
+        pImageItem->setZValue(0);
+        _pScene->addItem(pImageItem);
+        
+
+#if 0
         scaleFactor = 1.0;
 
         printAct->setEnabled(true);
@@ -87,6 +126,8 @@ void ImageViewer::open()
 
         if (!fitToWindowAct->isChecked())
             imageLabel->adjustSize();
+#endif
+
     }
 }
 //! [4]

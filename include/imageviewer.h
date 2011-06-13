@@ -43,6 +43,7 @@
 
 #include <QtGui/QMainWindow>
 #include <QtGui/QPrinter>
+#include <QtGui/QtGui>
 
 QT_BEGIN_NAMESPACE
 class QAction;
@@ -51,6 +52,21 @@ class QMenu;
 class QScrollArea;
 class QScrollBar;
 QT_END_NAMESPACE
+
+
+
+class QGraphicsRectWidget : public QGraphicsWidget
+{
+public:
+   void paint(QPainter *painter, const QStyleOptionGraphicsItem *,
+      QWidget *)
+   {
+      painter->fillRect(rect(), Qt::blue);
+   }
+};
+
+
+
 
 //! [0]
 class ImageViewer : public QMainWindow
@@ -97,6 +113,9 @@ private:
     QMenu *fileMenu;
     QMenu *viewMenu;
     QMenu *helpMenu;
+
+
+    QGraphicsScene* _pScene;
 };
 //! [0]
 
