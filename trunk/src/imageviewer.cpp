@@ -15,10 +15,10 @@ ImageViewer::ImageViewer()
    // try to add a graphics scene+window with 4 squares 
    // in overlay to the image
 
-   QGraphicsRectWidget *button1 = new QGraphicsRectWidget;
-   QGraphicsRectWidget *button2 = new QGraphicsRectWidget;
-   QGraphicsRectWidget *button3 = new QGraphicsRectWidget;
-   QGraphicsRectWidget *button4 = new QGraphicsRectWidget;
+   Cell *button1 = new Cell;
+   Cell *button2 = new Cell;
+   Cell *button3 = new Cell;
+   Cell *button4 = new Cell;
    button2->setZValue(1);
    button2->setZValue(2);
    button3->setZValue(3);
@@ -88,6 +88,9 @@ void ImageViewer::open()
       _pScene->addItem(pImageItem);
 
       _pScene->setSceneRect(pImageItem->boundingRect());
+      
+
+      _pCreateGridAction->setEnabled(true);
 
 
 #if 0
@@ -128,10 +131,10 @@ void ImageViewer::print()
 //! [8]
 
 //! [9]
-void ImageViewer::zoomIn()
+void ImageViewer::createGrid()
 //! [9] //! [10]
 {
-   scaleImage(1.25);
+   std::cout << "create the grid"<< std::endl;
 }
 
 void ImageViewer::zoomOut()
@@ -199,10 +202,10 @@ void ImageViewer::createActions()
    exitAct->setShortcut(tr("Ctrl+Q"));
    connect(exitAct, SIGNAL(triggered()), this, SLOT(close()));
 
-   zoomInAct = new QAction(tr("Zoom &In (25%)"), this);
-   zoomInAct->setShortcut(tr("Ctrl++"));
-   zoomInAct->setEnabled(false);
-   connect(zoomInAct, SIGNAL(triggered()), this, SLOT(zoomIn()));
+   _pCreateGridAction = new QAction(tr("&Create Grid"), this);
+   _pCreateGridAction->setShortcut(tr("Ctrl+g"));
+   _pCreateGridAction->setEnabled(false);
+   connect(_pCreateGridAction, SIGNAL(triggered()), this, SLOT(createGrid()));
 
    zoomOutAct = new QAction(tr("Zoom &Out (25%)"), this);
    zoomOutAct->setShortcut(tr("Ctrl+-"));
@@ -238,19 +241,20 @@ void ImageViewer::createMenus()
    fileMenu->addSeparator();
    fileMenu->addAction(exitAct);
 
-   viewMenu = new QMenu(tr("&View"), this);
-   viewMenu->addAction(zoomInAct);
-   viewMenu->addAction(zoomOutAct);
-   viewMenu->addAction(normalSizeAct);
-   viewMenu->addSeparator();
-   viewMenu->addAction(fitToWindowAct);
+   _pToolMenu = new QMenu(tr("&Tools"), this);
+   _pToolMenu->addAction(_pCreateGridAction);   
+   
+   _pToolMenu->addSeparator();
+
+   _pToolMenu->addAction(normalSizeAct);
+   _pToolMenu->addAction(fitToWindowAct);
 
    helpMenu = new QMenu(tr("&Help"), this);
    helpMenu->addAction(aboutAct);
    helpMenu->addAction(aboutQtAct);
 
    menuBar()->addMenu(fileMenu);
-   menuBar()->addMenu(viewMenu);
+   menuBar()->addMenu(_pToolMenu);
    menuBar()->addMenu(helpMenu);
 }
 //! [20]
@@ -259,7 +263,7 @@ void ImageViewer::createMenus()
 void ImageViewer::updateActions()
 //! [21] //! [22]
 {
-   zoomInAct->setEnabled(!fitToWindowAct->isChecked());
+   _pCreateGridAction->setEnabled(!fitToWindowAct->isChecked());
    zoomOutAct->setEnabled(!fitToWindowAct->isChecked());
    normalSizeAct->setEnabled(!fitToWindowAct->isChecked());
 }
@@ -276,7 +280,7 @@ void ImageViewer::scaleImage(double factor)
    adjustScrollBar(scrollArea->horizontalScrollBar(), factor);
    adjustScrollBar(scrollArea->verticalScrollBar(), factor);
 
-   zoomInAct->setEnabled(scaleFactor < 3.0);
+   _pCreateGridAction->setEnabled(scaleFactor < 3.0);
    zoomOutAct->setEnabled(scaleFactor > 0.333);
 }
 //! [24]

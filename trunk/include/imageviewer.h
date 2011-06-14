@@ -2,6 +2,11 @@
 #ifndef IMAGEVIEWER_H
 #define IMAGEVIEWER_H
 
+// civico13gol
+#include <grid.h>
+
+
+// Qt
 #include <QtGui/QMainWindow>
 #include <QtGui/QPrinter>
 #include <QtGui/QtGui>
@@ -19,36 +24,7 @@ QT_END_NAMESPACE
 #include <iostream>
 
 
-class QGraphicsRectWidget : public QGraphicsWidget
-{
-public:
 
-   QGraphicsRectWidget() :
-      _alive(false)
-      {
-
-      }
-
-
-      void paint(QPainter *painter, const QStyleOptionGraphicsItem *,
-         QWidget *)
-      {
-         QColor color(Qt::blue);
-         if (_alive)
-            color = Qt::yellow;
-
-         color.setAlphaF(0.7);
-         painter->fillRect(rect(), color);
-      }
-
-      void mousePressEvent(QGraphicsSceneMouseEvent *event)
-      {
-         _alive = !_alive;
-         update();
-      }
-
-      bool _alive;
-};
 
 
 
@@ -66,7 +42,7 @@ public:
    private slots:
       void open();
       void print();
-      void zoomIn();
+      void createGrid();
       void zoomOut();
       void normalSize();
       void fitToWindow();
@@ -90,7 +66,7 @@ private:
    QAction *openAct;
    QAction *printAct;
    QAction *exitAct;
-   QAction *zoomInAct;
+   QAction *_pCreateGridAction;
    QAction *zoomOutAct;
    QAction *normalSizeAct;
    QAction *fitToWindowAct;
@@ -98,7 +74,7 @@ private:
    QAction *aboutQtAct;
 
    QMenu *fileMenu;
-   QMenu *viewMenu;
+   QMenu *_pToolMenu;
    QMenu *helpMenu;
 
 
