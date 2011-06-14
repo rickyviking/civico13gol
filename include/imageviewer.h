@@ -36,6 +36,7 @@ class ImageViewer : public QMainWindow
 
 public:
    ImageViewer();
+   ~ImageViewer();
 
    void wheelEvent(QWheelEvent * event);
 
@@ -43,6 +44,7 @@ public:
       void open();
       void print();
       void createGrid();
+      void resetGrid();
       void zoomOut();
       void normalSize();
       void fitToWindow();
@@ -67,6 +69,9 @@ private:
    QAction *printAct;
    QAction *exitAct;
    QAction *_pCreateGridAction;
+   QAction *_pResetGridAction;
+
+
    QAction *zoomOutAct;
    QAction *normalSizeAct;
    QAction *fitToWindowAct;
@@ -80,6 +85,8 @@ private:
 
    QGraphicsScene* _pScene;
    QGraphicsView* _pGraphicsView;
+
+   Grid* _pGrid;
 };
 //! [0]
 

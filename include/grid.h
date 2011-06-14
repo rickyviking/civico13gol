@@ -13,9 +13,7 @@ public:
    Cell() :
       _alive(false)
       {
-
       }
-
 
       void paint(QPainter *painter, const QStyleOptionGraphicsItem *,
          QWidget *)
@@ -44,7 +42,20 @@ public:
 class Grid : public QObject
 {
 public:
-    Grid();
+    Grid(QGraphicsScene* pScene);
+
+    void CreateGrid(unsigned int numHorizontalCell);
+    void ResetGrid();
+
+
+protected:
+
+   std::vector<QPointer<Cell> > _cellVec;
+   unsigned int _numColumn;
+   unsigned int _numRows;
+
+   QGraphicsScene* _pScene;
+
 };
 
 #endif

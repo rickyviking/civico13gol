@@ -10,8 +10,6 @@ ImageViewer::ImageViewer()
    createActions();
    createMenus();
 
-
-
    // try to add a graphics scene+window with 4 squares 
    // in overlay to the image
 
@@ -57,15 +55,15 @@ ImageViewer::ImageViewer()
 
    setCentralWidget(_pGraphicsView);
 
-
-
-
    setWindowTitle(tr("Civico13-GOL"));
    resize(400, 300);
-}
-//! [0]
 
-//! [1]
+
+   // create the grid instance
+   _pGrid = new Grid(_pScene);
+}
+
+//////////////////////////////////////////////////////////////////////////
 void ImageViewer::open()
 //! [1] //! [2]
 {
@@ -91,6 +89,7 @@ void ImageViewer::open()
       
 
       _pCreateGridAction->setEnabled(true);
+      _pResetGridAction->setEnabled(true);
 
 
 #if 0
@@ -130,12 +129,25 @@ void ImageViewer::print()
 }
 //! [8]
 
-//! [9]
+//////////////////////////////////////////////////////////////////////////
 void ImageViewer::createGrid()
-//! [9] //! [10]
 {
    std::cout << "create the grid"<< std::endl;
+   _pGrid->CreateGrid(300);
 }
+
+
+//////////////////////////////////////////////////////////////////////////
+void ImageViewer::resetGrid()
+{
+   std::cout << "reset the grid"<< std::endl;
+   _pGrid->ResetGrid();
+
+}
+
+
+
+
 
 void ImageViewer::zoomOut()
 {
@@ -207,6 +219,11 @@ void ImageViewer::createActions()
    _pCreateGridAction->setEnabled(false);
    connect(_pCreateGridAction, SIGNAL(triggered()), this, SLOT(createGrid()));
 
+   _pResetGridAction = new QAction(tr("&Reset Grid"), this);
+   _pResetGridAction->setShortcut(tr("Ctrl+r"));
+   _pResetGridAction->setEnabled(false);
+   connect(_pResetGridAction, SIGNAL(triggered()), this, SLOT(resetGrid()));
+
    zoomOutAct = new QAction(tr("Zoom &Out (25%)"), this);
    zoomOutAct->setShortcut(tr("Ctrl+-"));
    zoomOutAct->setEnabled(false);
@@ -243,6 +260,7 @@ void ImageViewer::createMenus()
 
    _pToolMenu = new QMenu(tr("&Tools"), this);
    _pToolMenu->addAction(_pCreateGridAction);   
+   _pToolMenu->addAction(_pResetGridAction);
    
    _pToolMenu->addSeparator();
 
@@ -303,5 +321,15 @@ void ImageViewer::wheelEvent( QWheelEvent * event )
 
 
 }
+
+//////////////////////////////////////////////////////////////////////////
+ImageViewer::~ImageViewer()
+{
+   _pGrid->ResetGrid();
+   delete _pGrid;
+
+}
+
+
 
 //! [26]
