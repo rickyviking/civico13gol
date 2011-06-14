@@ -54,6 +54,8 @@ class QScrollBar;
 QT_END_NAMESPACE
 
 
+#include <iostream>
+
 
 class QGraphicsRectWidget : public QGraphicsWidget
 {
@@ -63,6 +65,12 @@ public:
    {
       painter->fillRect(rect(), Qt::blue);
    }
+
+   void mousePressEvent(QGraphicsSceneMouseEvent *event)
+   {
+      std::cout << "MOUSE IN" << std::endl;
+   }
+
 };
 
 

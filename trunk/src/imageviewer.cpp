@@ -68,8 +68,14 @@ ImageViewer::ImageViewer()
     QGraphicsRectWidget *button3 = new QGraphicsRectWidget;
     QGraphicsRectWidget *button4 = new QGraphicsRectWidget;
     button2->setZValue(1);
-    button3->setZValue(2);
-    button4->setZValue(3);
+    button2->setZValue(2);
+    button3->setZValue(3);
+    button4->setZValue(4);
+
+    button1->setGeometry(0, 0, 50, 50);
+    button2->setGeometry(300, 0, 50, 50);
+    button3->setGeometry(0, 300, 50, 50);
+    button4->setGeometry(300, 300, 50, 50);
 
     _pScene= new QGraphicsScene(0, 0, 500, 500);
     //scene.setBackgroundBrush(Qt::black);
@@ -113,7 +119,7 @@ void ImageViewer::open()
         QGraphicsPixmapItem* pImageItem = new QGraphicsPixmapItem;
         pImageItem->setPixmap(QPixmap::fromImage(image));
         // use 0 as background level...
-        pImageItem->setZValue(0);
+        pImageItem->setZValue(-1);
         _pScene->addItem(pImageItem);
         
 
