@@ -45,6 +45,7 @@
 #include <QtGui/QPrinter>
 #include <QtGui/QtGui>
 
+
 QT_BEGIN_NAMESPACE
 class QAction;
 class QLabel;
@@ -60,17 +61,32 @@ QT_END_NAMESPACE
 class QGraphicsRectWidget : public QGraphicsWidget
 {
 public:
+
+   QGraphicsRectWidget() :
+      _alive(false)
+      {
+
+      }
+
+
    void paint(QPainter *painter, const QStyleOptionGraphicsItem *,
       QWidget *)
    {
-      painter->fillRect(rect(), Qt::blue);
+      QColor color(Qt::blue);
+      if (_alive)
+         color = Qt::yellow;
+
+      color.setAlphaF(0.7);
+      painter->fillRect(rect(), color);
    }
 
    void mousePressEvent(QGraphicsSceneMouseEvent *event)
    {
-      std::cout << "MOUSE IN" << std::endl;
+      _alive = !_alive;
+      update();
    }
 
+   bool _alive;
 };
 
 

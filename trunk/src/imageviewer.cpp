@@ -73,7 +73,7 @@ ImageViewer::ImageViewer()
     button4->setZValue(4);
 
     button1->setGeometry(0, 0, 50, 50);
-    button2->setGeometry(300, 0, 50, 50);
+    button2->setGeometry(480, 0, 50, 50);
     button3->setGeometry(0, 300, 50, 50);
     button4->setGeometry(300, 300, 50, 50);
 
