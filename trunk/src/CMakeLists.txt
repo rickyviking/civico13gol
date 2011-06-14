@@ -13,13 +13,15 @@ SET(civico13golApp_NAME civico13golApp)
 
 # header files
 SET (civico13golApp_HDRS 
-      ../include/imageviewer.h
+	../include/grid.h
+	../include/imageviewer.h
    )
 
 # source files
 SET( civico13golApp_SRCS
-      imageviewer.cpp
-      main.cpp
+		grid.cpp
+		imageviewer.cpp
+		main.cpp
      )
      
      
