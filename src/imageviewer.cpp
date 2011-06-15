@@ -5,6 +5,9 @@
 // Qt
 #include <QtGui/QtGui>
 
+// stl
+#include <sstream>
+
 
 ImageViewer::ImageViewer()
 {
@@ -182,6 +185,16 @@ void ImageViewer::step()
    _pGOL->Step();
    // repaint the scene
    _pScene->update(_pGraphicsView->sceneRect());
+
+   const GameOfLife::LifeHistory& lifeHistory = _pGOL->GetLifeHistory();
+
+   std::stringstream ss;
+   unsigned int gen = lifeHistory.size() -1;
+   ss << gen;
+   _pMainWindow->genCounter->setText(QString::fromStdString(ss.str()));
+    std::stringstream ss2;
+   ss2 << lifeHistory[gen];
+   _pMainWindow->aliveCounter->setText(QString::fromStdString(ss2.str()));
 }
 
 

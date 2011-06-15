@@ -86,6 +86,9 @@ void GameOfLife::Step()
    unsigned int numRows = _pGrid->GetNumRows();
    unsigned int numCol = _pGrid->GetNumColumn();
 
+   // reset alive counter for this step
+   _aliveCounter = 0;
+
    // run the inside loop before
    for (unsigned int i=1; i<numRows-1; ++i)
    {
@@ -351,6 +354,9 @@ void GameOfLife::Step()
       }
    }
 
+   _lifeHistory.push_back(_aliveCounter);
+
+
    std::cout << " done!" << std::endl;
 
 }
@@ -375,4 +381,13 @@ void GameOfLife::ApplyGolRule( Cell* pCell, unsigned int neighbors, unsigned cel
       else
          _cells[cellIdx] = 1;
    }
+
+   if (_cells[cellIdx] == 1)
+      ++_aliveCounter;
+}
+
+//////////////////////////////////////////////////////////////////////////
+void GameOfLife::ResetHistory()
+{
+   _lifeHistory.clear();
 }
