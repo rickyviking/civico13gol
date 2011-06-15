@@ -44,6 +44,8 @@ public:
       void createGrid();
       void resetGrid();
 
+      void saveGrid();
+
       void normalSize();
       void fitToWindow();
 

@@ -19,9 +19,13 @@ ImageViewer::ImageViewer()
    connect(_pMainWindow->actionOpen, SIGNAL(triggered()), this, SLOT(open()));
    connect(_pMainWindow->actionReset_Zoom, SIGNAL(triggered()), this, SLOT(normalSize()));
 
+   connect(_pMainWindow->actionSave_Grid, SIGNAL(triggered()), this, SLOT(saveGrid()));
+
    // connect grid buttons
    connect(_pMainWindow->createGrid, SIGNAL(pressed()), this, SLOT(createGrid()));
    connect(_pMainWindow->clearGrid, SIGNAL(pressed()), this, SLOT(resetGrid()));
+
+
 
    // connect GOL step
    connect(_pMainWindow->gol_step, SIGNAL(pressed()), this, SLOT(step()));
@@ -195,6 +199,20 @@ void ImageViewer::step()
     std::stringstream ss2;
    ss2 << lifeHistory[gen];
    _pMainWindow->aliveCounter->setText(QString::fromStdString(ss2.str()));
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+void ImageViewer::saveGrid()
+{
+   QString fileName = QFileDialog::getSaveFileName(this,
+                                                   tr("Save File"), 
+                                                   QDir::currentPath());
+   if (!fileName.isEmpty()) 
+   {
+      _pGrid->SaveToFile(fileName.toStdString());
+   }
+
 }
 
 
