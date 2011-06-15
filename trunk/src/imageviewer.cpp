@@ -16,8 +16,12 @@ ImageViewer::ImageViewer()
    connect(_pMainWindow->actionOpen, SIGNAL(triggered()), this, SLOT(open()));
    connect(_pMainWindow->actionReset_Zoom, SIGNAL(triggered()), this, SLOT(normalSize()));
 
+   // connect grid buttons
    connect(_pMainWindow->createGrid, SIGNAL(pressed()), this, SLOT(createGrid()));
    connect(_pMainWindow->clearGrid, SIGNAL(pressed()), this, SLOT(resetGrid()));
+
+   // connect GOL step
+   connect(_pMainWindow->gol_step, SIGNAL(pressed()), this, SLOT(step()));
 
    
 
@@ -53,6 +57,8 @@ ImageViewer::ImageViewer()
 
    // create the grid instance
    _pGrid = new Grid(_pScene);
+   // create also a GOL instance
+   _pGOL = new GameOfLife;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -114,6 +120,8 @@ void ImageViewer::createGrid()
 
    unsigned int numCol = _pMainWindow->numColBox->value();
    _pGrid->CreateGrid(numCol);
+
+   _pGOL->SetGrid(_pGrid);
 }
 
 
@@ -165,8 +173,15 @@ void ImageViewer::wheelEvent( QWheelEvent * event )
 ImageViewer::~ImageViewer()
 {
    _pGrid->ResetGrid();
-   delete _pGrid;
+}
 
+//////////////////////////////////////////////////////////////////////////
+void ImageViewer::step()
+{
+   // update cells with the algorithm
+   _pGOL->Step();
+   // repaint the scene
+   _pScene->update(_pGraphicsView->sceneRect());
 }
 
 

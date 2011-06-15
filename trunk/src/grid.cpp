@@ -57,3 +57,98 @@ Grid::Grid( QGraphicsScene* pScene ) :
 {
 
 }
+
+//////////////////////////////////////////////////////////////////////////
+Cell* Grid::GetCell( unsigned int rowIdx, unsigned int colIdx )
+{
+   if (rowIdx < _numRows && colIdx < _numColumn)
+      return _cellVec[rowIdx* _numColumn + colIdx];
+
+   return NULL;
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+void GameOfLife::SetGrid( Grid* pGrid )
+{
+   _pGrid = pGrid;
+   _cells.clear();
+   _cells.resize(_pGrid->GetNumColumn() * _pGrid->GetNumRows());
+}
+
+//////////////////////////////////////////////////////////////////////////
+void GameOfLife::Step()
+{
+
+   std::cout << "stepping...";
+
+
+   unsigned int numRows = _pGrid->GetNumRows();
+   unsigned int numCol = _pGrid->GetNumColumn();
+
+   for (unsigned int i=1; i<numRows-1; ++i)
+   {
+      for (unsigned int j=1; j<numCol-1; ++j)
+      {
+         // check the num of neighbors that are alive
+         Cell* pCell = _pGrid->GetCell(i, j);
+         unsigned int neighbors = 0;
+         
+         // previous column
+         unsigned int col = j-1;
+         for (unsigned k = i-1; k<i+2; ++k)
+         {
+            if (_pGrid->GetCell(k, col)->_state == 1)
+               ++neighbors;
+         }
+         // next column
+         col = j+1;
+         for (unsigned k = i-1; k<i+2; ++k)
+         {
+            if (_pGrid->GetCell(k, col)->_state == 1)
+               ++neighbors;
+         }
+
+         // up ^ down
+         if (_pGrid->GetCell(i-1, j)->_state == 1)
+            ++neighbors;
+         if (_pGrid->GetCell(i+1, j)->_state == 1)
+            ++neighbors;
+
+
+         unsigned cellIdx = i*numCol + j;
+         // now apply the GOL rule:
+         if(pCell->_state == 0)
+         {
+            if (neighbors == 3)
+               _cells[cellIdx] = 1;
+            else
+               _cells[cellIdx] = 0;
+         }
+         else if (pCell->_state == 1)
+         {
+            if (neighbors < 2)
+               _cells[cellIdx] = 0;
+            else if (neighbors > 3)
+               _cells[cellIdx] = 0;
+            else
+               _cells[cellIdx] = 1;
+         }
+
+      }
+   }
+
+   // now apply the new state to the atual cells to draw
+   for (unsigned int i=1; i<numRows-1; ++i)
+   {
+      for (unsigned int j=1; j<numCol-1; ++j)
+      {
+         Cell* pCell = _pGrid->GetCell(i, j);
+         if (pCell->_state != -1)
+            pCell->_state = _cells[i*numCol+j];
+      }
+   }
+
+   std::cout << " done!" << std::endl;
+
+}
