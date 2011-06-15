@@ -86,6 +86,7 @@ void GameOfLife::Step()
    unsigned int numRows = _pGrid->GetNumRows();
    unsigned int numCol = _pGrid->GetNumColumn();
 
+   // run the inside loop before
    for (unsigned int i=1; i<numRows-1; ++i)
    {
       for (unsigned int j=1; j<numCol-1; ++j)
@@ -117,31 +118,30 @@ void GameOfLife::Step()
 
 
          unsigned cellIdx = i*numCol + j;
-         // now apply the GOL rule:
-         if(pCell->_state == 0)
-         {
-            if (neighbors == 3)
-               _cells[cellIdx] = 1;
-            else
-               _cells[cellIdx] = 0;
-         }
-         else if (pCell->_state == 1)
-         {
-            if (neighbors < 2)
-               _cells[cellIdx] = 0;
-            else if (neighbors > 3)
-               _cells[cellIdx] = 0;
-            else
-               _cells[cellIdx] = 1;
-         }
+
+         ApplyGolRule(pCell, neighbors, cellIdx);
+
 
       }
    }
 
+
+
+   // now run on the borders
+
+
+
+
+
+
+
+
+
+
    // now apply the new state to the atual cells to draw
-   for (unsigned int i=1; i<numRows-1; ++i)
+   for (unsigned int i=0; i<numRows; ++i)
    {
-      for (unsigned int j=1; j<numCol-1; ++j)
+      for (unsigned int j=0; j<numCol; ++j)
       {
          Cell* pCell = _pGrid->GetCell(i, j);
          if (pCell->_state != -1)
@@ -151,4 +151,26 @@ void GameOfLife::Step()
 
    std::cout << " done!" << std::endl;
 
+}
+
+//////////////////////////////////////////////////////////////////////////
+void GameOfLife::ApplyGolRule( Cell* pCell, unsigned int neighbors, unsigned cellIdx )
+{
+   // now apply the GOL rule:
+   if(pCell->_state == 0)
+   {
+      if (neighbors == 3)
+         _cells[cellIdx] = 1;
+      else
+         _cells[cellIdx] = 0;
+   }
+   else if (pCell->_state == 1)
+   {
+      if (neighbors < 2)
+         _cells[cellIdx] = 0;
+      else if (neighbors > 3)
+         _cells[cellIdx] = 0;
+      else
+         _cells[cellIdx] = 1;
+   }
 }
