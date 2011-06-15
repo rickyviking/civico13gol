@@ -1,9 +1,10 @@
+// civico
+#include <imageviewer.h>
+#include <GridScene.h>
 
-
-
+// Qt
 #include <QtGui/QtGui>
 
-#include <imageviewer.h>
 
 ImageViewer::ImageViewer()
 {
@@ -18,8 +19,17 @@ ImageViewer::ImageViewer()
    connect(_pMainWindow->createGrid, SIGNAL(pressed()), this, SLOT(createGrid()));
    connect(_pMainWindow->clearGrid, SIGNAL(pressed()), this, SLOT(resetGrid()));
 
+   
+
    // initialized a caso - resize the scene rect when loading an image
-   _pScene = new QGraphicsScene(0, 0, 800, 500);
+   //_pScene = new QGraphicsScene(0, 0, 800, 500);
+   _pScene = new GridScene();
+
+   // assign proper ID to the button, gridScene will recognize them
+   _pMainWindow->mouseModeGroup->setId(_pMainWindow->markLiveRadio, 101);
+   _pMainWindow->mouseModeGroup->setId(_pMainWindow->markEdgeRadio, 102);
+   
+   connect(_pMainWindow->mouseModeGroup, SIGNAL(buttonClicked(int)), _pScene, SLOT(ChangeMouseMode(int)));
 
    _pGraphicsView = new QGraphicsView(_pScene);
    _pGraphicsView->setFrameStyle(0);
