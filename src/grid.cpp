@@ -6,7 +6,9 @@
 
 #include <grid.h>
 
+// stl
 #include <iostream>
+#include <fstream>
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -65,6 +67,36 @@ Cell* Grid::GetCell( unsigned int rowIdx, unsigned int colIdx )
       return _cellVec[rowIdx* _numColumn + colIdx];
 
    return NULL;
+}
+
+//////////////////////////////////////////////////////////////////////////
+void Grid::SaveToFile( const std::string& fileName )
+{
+   std::fstream fileOut;
+   std::cout << "save to " << fileName << std::endl;
+   fileOut.open(fileName.c_str(), std::fstream::out);
+
+   /*
+   if (!fileOut.is_open())
+   {
+      std::cout << "FILE ISSUE" << std::endl;
+      return;
+   }
+   */
+
+   fileOut << _numRows << " " << _numColumn << std::endl;
+   for(unsigned int i =0; i<_numRows; ++i)
+   {
+      for (unsigned int j=0; j<_numColumn; ++j)
+      {
+         fileOut << GetCell(i, j)->_state << " ";
+      }
+
+      fileOut << std::endl;
+   }
+
+   fileOut.close();
+
 }
 
 

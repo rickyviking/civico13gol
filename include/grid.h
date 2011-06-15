@@ -67,6 +67,10 @@ public:
     unsigned int GetNumRows(){return _numRows;}
 
 
+    void SaveToFile(const std::string& fileName);
+    void LoadFromFile(const std::string& fileName);
+
+
 
 protected:
 
