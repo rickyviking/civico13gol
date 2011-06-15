@@ -86,18 +86,28 @@ class GameOfLife : public QObject
    Q_OBJECT
 
 public:
+
+   typedef std::vector<int> LifeHistory;
+
    GameOfLife(){}
 
    void SetGrid(Grid* pGrid);
 
    void Step();
 
-   void ApplyGolRule( Cell* pCell, unsigned int neighbors, unsigned cellIdx );
+   const LifeHistory& GetLifeHistory() const { return _lifeHistory; }
+   void ResetHistory();
 
 protected:
 
+   void ApplyGolRule( Cell* pCell, unsigned int neighbors, unsigned cellIdx );
+
+
    QPointer<Grid> _pGrid;
    std::vector<int> _cells;
+
+   LifeHistory _lifeHistory;
+   unsigned int _aliveCounter;
 };
 
 #endif
