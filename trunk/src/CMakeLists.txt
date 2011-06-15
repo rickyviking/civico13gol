@@ -34,7 +34,7 @@ INCLUDE_DIRECTORIES(${QT_INCLUDE_DIR}
 # qt process stuffs
 qt4_wrap_cpp(MOC_SOURCES ${civico13golApp_HDRS})
 #QT4_ADD_RESOURCES(RCC_SOURCES resources/itCLientQt.qrc)
-#QT4_WRAP_UI(UI_SOURCES GOL.ui)
+QT4_WRAP_UI(UI_SOURCES GOL.ui)
 
 
 
@@ -44,7 +44,7 @@ ADD_EXECUTABLE(${civico13golApp_NAME}
 	${civico13golApp_HDRS}
 	${MOC_SOURCES}
   #  ${RCC_SOURCES}
-  #  ${UI_SOURCES}
+    ${UI_SOURCES}
 )
 
 SET(TARGET_LABEL "${APPLICATION_LABEL_PREFIX} ${civico13golApp_NAME}")
