@@ -120,25 +120,227 @@ void GameOfLife::Step()
          unsigned cellIdx = i*numCol + j;
 
          ApplyGolRule(pCell, neighbors, cellIdx);
-
-
       }
    }
 
 
-
    // now run on the borders
 
+   // upper row
+   {
+      unsigned int i=0;
+
+      for (unsigned int j=1; j<numCol-1; ++j)
+      {
+         // check the num of neighbors that are alive
+         Cell* pCell = _pGrid->GetCell(i, j);
+         unsigned int neighbors = 0;
+
+         // previous column
+         unsigned int col = j-1;
+         if (_pGrid->GetCell(i, col)->_state == 1)
+            ++neighbors;
+         if (_pGrid->GetCell(i+1, col)->_state == 1)
+            ++neighbors;
+
+         // next column
+         col = j+1;
+         if (_pGrid->GetCell(i, col)->_state == 1)
+            ++neighbors;
+         if (_pGrid->GetCell(i+1, col)->_state == 1)
+            ++neighbors;
+
+         // down         
+         if (_pGrid->GetCell(i+1, j)->_state == 1)
+            ++neighbors;
+
+
+         unsigned cellIdx = i*numCol + j;
+
+         ApplyGolRule(pCell, neighbors, cellIdx);
+      }
+   }
+
+   // bottom row
+   {
+      unsigned int i=numRows-1;
+
+         for (unsigned int j=1; j<numCol-1; ++j)
+         {
+            // check the num of neighbors that are alive
+            Cell* pCell = _pGrid->GetCell(i, j);
+            unsigned int neighbors = 0;
+
+            // previous column
+            unsigned int col = j-1;
+            if (_pGrid->GetCell(i, col)->_state == 1)
+               ++neighbors;
+            if (_pGrid->GetCell(i-1, col)->_state == 1)
+               ++neighbors;
+
+            // next column
+            col = j+1;
+            if (_pGrid->GetCell(i, col)->_state == 1)
+               ++neighbors;
+            if (_pGrid->GetCell(i-1, col)->_state == 1)
+               ++neighbors;
+
+            // up
+            if (_pGrid->GetCell(i-1, j)->_state == 1)
+               ++neighbors;
+
+
+            unsigned cellIdx = i*numCol + j;
+
+            ApplyGolRule(pCell, neighbors, cellIdx);
+         }
+   }
+
+   // left column
+   {
+      unsigned int j=0;
+
+      for (unsigned int i=1; i<numRows-1; ++i)
+      {
+         // check the num of neighbors that are alive
+         Cell* pCell = _pGrid->GetCell(i, j);
+         unsigned int neighbors = 0;
+        
+         // next column
+         unsigned int col = j+1;
+         if (_pGrid->GetCell(i-1, col)->_state == 1)
+            ++neighbors;
+         if (_pGrid->GetCell(i, col)->_state == 1)
+            ++neighbors;
+         if (_pGrid->GetCell(i+1, col)->_state == 1)
+            ++neighbors;
+
+         // up ^ down
+         if (_pGrid->GetCell(i-1, j)->_state == 1)
+            ++neighbors;
+         if (_pGrid->GetCell(i+1, j)->_state == 1)
+            ++neighbors;
+
+
+         unsigned cellIdx = i*numCol + j;
+
+         ApplyGolRule(pCell, neighbors, cellIdx);
+      }
+   }
+
+
+   // right column
+   {
+      unsigned int j=numCol-1;
+
+      for (unsigned int i=1; i<numRows-1; ++i)
+      {
+         // check the num of neighbors that are alive
+         Cell* pCell = _pGrid->GetCell(i, j);
+         unsigned int neighbors = 0;
+
+         // previous column
+         unsigned int col = j-1;
+         if (_pGrid->GetCell(i-1, col)->_state == 1)
+            ++neighbors;
+         if (_pGrid->GetCell(i, col)->_state == 1)
+            ++neighbors;
+         if (_pGrid->GetCell(i+1, col)->_state == 1)
+            ++neighbors;
+
+         // up ^ down
+         if (_pGrid->GetCell(i-1, j)->_state == 1)
+            ++neighbors;
+         if (_pGrid->GetCell(i+1, j)->_state == 1)
+            ++neighbors;
+
+
+         unsigned cellIdx = i*numCol + j;
+
+         ApplyGolRule(pCell, neighbors, cellIdx);
+      }
+   }
+
+
+   // finally the corners
+   // top left
+   {
+      // check the num of neighbors that are alive
+      Cell* pCell = _pGrid->GetCell(0, 0);
+      unsigned int neighbors = 0;
+
+      // previous column
+      if (_pGrid->GetCell(1, 0)->_state == 1)
+         ++neighbors;
+      if (_pGrid->GetCell(0, 1)->_state == 1)
+         ++neighbors;
+      if (_pGrid->GetCell(1, 1)->_state == 1)
+         ++neighbors;
+
+      ApplyGolRule(pCell, neighbors, 0);
+   }
+
+   // top right
+   {
+
+      // check the num of neighbors that are alive
+      unsigned int col = numCol -1;
+      Cell* pCell = _pGrid->GetCell(0, col);
+      unsigned int neighbors = 0;
+
+      // previous column
+      if (_pGrid->GetCell(0, col-1)->_state == 1)
+         ++neighbors;
+      if (_pGrid->GetCell(1, col)->_state == 1)
+         ++neighbors;
+      if (_pGrid->GetCell(1, col-1)->_state == 1)
+         ++neighbors;
+
+      ApplyGolRule(pCell, neighbors, numCol-1);
+   }
+
+
+   // bottom right
+   {
+      // check the num of neighbors that are alive
+      unsigned int row = numRows-1;
+      unsigned int col = numCol -1;
+      Cell* pCell = _pGrid->GetCell(row, col);
+      unsigned int neighbors = 0;
+
+      // previous column
+      if (_pGrid->GetCell(row, col-1)->_state == 1)
+         ++neighbors;
+      if (_pGrid->GetCell(row-1, col)->_state == 1)
+         ++neighbors;
+      if (_pGrid->GetCell(row-1, col-1)->_state == 1)
+         ++neighbors;
+
+      ApplyGolRule(pCell, neighbors, numCol*numRows-1);
+   }
+
+   // bottom left
+   {
+      // check the num of neighbors that are alive
+      unsigned int row = numRows-1;      
+      Cell* pCell = _pGrid->GetCell(row, 0);
+      unsigned int neighbors = 0;
+
+      // previous column    
+      if (_pGrid->GetCell(row-1, 0)->_state == 1)
+         ++neighbors;
+      if (_pGrid->GetCell(row-1, 1)->_state == 1)
+         ++neighbors;
+      if (_pGrid->GetCell(row, 1)->_state == 1)
+         ++neighbors;
+
+      ApplyGolRule(pCell, neighbors, numCol*(numRows-1));
+   }
 
 
 
 
-
-
-
-
-
-   // now apply the new state to the atual cells to draw
+   // now apply the new state to the actual cells to draw
    for (unsigned int i=0; i<numRows; ++i)
    {
       for (unsigned int j=0; j<numCol; ++j)
