@@ -72,9 +72,9 @@ Cell* Grid::GetCell( unsigned int rowIdx, unsigned int colIdx )
 //////////////////////////////////////////////////////////////////////////
 void Grid::SaveToFile( const std::string& fileName )
 {
-   std::fstream fileOut;
+   std::ofstream fileOut;
    std::cout << "save to " << fileName << std::endl;
-   fileOut.open(fileName.c_str(), std::fstream::out);
+   fileOut.open(fileName.c_str());
 
    /*
    if (!fileOut.is_open())
@@ -97,6 +97,48 @@ void Grid::SaveToFile( const std::string& fileName )
 
    fileOut.close();
 
+}
+
+//////////////////////////////////////////////////////////////////////////
+void Grid::LoadFromFile( const std::string& fileName )
+{
+   ResetGrid();
+
+   std::ifstream fileIn(fileName.c_str());
+   unsigned int numRows;
+   fileIn >> numRows;
+   unsigned int numCol;
+   fileIn >> numCol;
+
+   _numColumn = numCol;
+   _numRows = numRows;
+
+   // compute dimension
+   const QRectF& rect = _pScene->sceneRect();
+   float size = rect.width() / (float) numCol;
+   float offset = 0.1f * size;
+   float cellSize = size - 2.f*offset;
+
+   int value;
+   for(unsigned int i = 0; i< numRows; ++i)
+   {
+      for ( unsigned int j=0; j<numCol; ++j)
+      {
+         fileIn >> value;
+         
+         Cell* pCell = new Cell;
+         pCell->setZValue(1);
+         pCell->setGeometry(j*size+offset, i*size + offset, cellSize, cellSize);
+         pCell->_state = value;
+
+         _cellVec.push_back(pCell);
+         _pScene->addItem(pCell);
+
+      }
+   }
+
+   _pScene->update(_pScene->sceneRect());
+   
 }
 
 

@@ -45,6 +45,7 @@ public:
       void resetGrid();
 
       void saveGrid();
+      void loadGrid();
 
       void normalSize();
       void fitToWindow();

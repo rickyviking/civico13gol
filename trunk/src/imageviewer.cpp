@@ -20,6 +20,7 @@ ImageViewer::ImageViewer()
    connect(_pMainWindow->actionReset_Zoom, SIGNAL(triggered()), this, SLOT(normalSize()));
 
    connect(_pMainWindow->actionSave_Grid, SIGNAL(triggered()), this, SLOT(saveGrid()));
+   connect(_pMainWindow->actionLoad_Grid, SIGNAL(triggered()), this, SLOT(loadGrid()));
 
    // connect grid buttons
    connect(_pMainWindow->createGrid, SIGNAL(pressed()), this, SLOT(createGrid()));
@@ -70,7 +71,6 @@ ImageViewer::ImageViewer()
 
 //////////////////////////////////////////////////////////////////////////
 void ImageViewer::open()
-//! [1] //! [2]
 {
    QString fileName = QFileDialog::getOpenFileName(this,
       tr("Open File"), QDir::currentPath());
@@ -211,6 +211,20 @@ void ImageViewer::saveGrid()
    if (!fileName.isEmpty()) 
    {
       _pGrid->SaveToFile(fileName.toStdString());
+   }
+
+}
+
+//////////////////////////////////////////////////////////////////////////
+void ImageViewer::loadGrid()
+{
+   QString fileName = QFileDialog::getOpenFileName(this,
+                                                   tr("Open File"), 
+                                                   QDir::currentPath());
+   if (!fileName.isEmpty()) 
+   {
+      _pGrid->LoadFromFile(fileName.toStdString());
+    
    }
 
 }
