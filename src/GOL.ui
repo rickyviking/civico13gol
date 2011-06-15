@@ -97,22 +97,25 @@
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="radioButton">
+         <widget class="QRadioButton" name="markLiveRadio">
           <property name="text">
            <string>Mark Live Cells</string>
           </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
           <attribute name="buttonGroup">
-           <string>buttonGroup</string>
+           <string>mouseModeGroup</string>
           </attribute>
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="radioButton_2">
+         <widget class="QRadioButton" name="markEdgeRadio">
           <property name="text">
            <string>Mark Edges</string>
           </property>
           <attribute name="buttonGroup">
-           <string>buttonGroup</string>
+           <string>mouseModeGroup</string>
           </attribute>
          </widget>
         </item>
@@ -208,6 +211,6 @@
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="buttonGroup"/>
+  <buttongroup name="mouseModeGroup"/>
  </buttongroups>
 </ui>

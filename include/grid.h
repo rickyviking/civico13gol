@@ -16,38 +16,32 @@ class Cell : public QGraphicsWidget
 public:
 
    Cell() :
-      _alive(false)
+      _state(0)
       {
          //setAcceptHoverEvents(true);
-         setAcceptedMouseButtons(Qt::RightButton);
+         // disable mouse press event
+         setAcceptedMouseButtons(0);
       }
 
       void paint(QPainter *painter, const QStyleOptionGraphicsItem *,
          QWidget *)
       {
          QColor color(Qt::blue);
-         if (_alive)
+         if (_state == 1)
             color = Qt::yellow;
+         else if (_state == -1)
+            color = Qt::red;
 
-         color.setAlphaF(0.7);
+         color.setAlphaF(0.5);
          painter->fillRect(rect(), color);
       }
 
-      void mousePressEvent(QGraphicsSceneMouseEvent *event)
-      {
-         if (event->button() == Qt::RightButton)
-         {
-            _alive = !_alive;
-            update();
-         }
-      }
 
-      void hoverEnterEvent(QGraphicsSceneDragDropEvent *event)
-      {
-         std::cout << "hover!" << std::endl;
-      }
-
-      bool _alive;
+      // -1 = edge
+      //  0 = dead
+      //  1 = alive
+      //  2 = path (vediamo...)
+      int _state; 
 };
 
 
@@ -57,6 +51,9 @@ public:
 class Grid : public QObject
 {
 public:
+
+   
+
     Grid(QGraphicsScene* pScene);
 
     void CreateGrid(unsigned int numHorizontalCell);
