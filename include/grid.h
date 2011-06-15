@@ -34,6 +34,8 @@ public:
 
          color.setAlphaF(0.5);
          painter->fillRect(rect(), color);
+
+         //std::cout << "paint";
       }
 
 
@@ -59,6 +61,12 @@ public:
     void CreateGrid(unsigned int numHorizontalCell);
     void ResetGrid();
 
+    Cell* GetCell(unsigned int rowIdx, unsigned int colIdx);
+
+    unsigned int GetNumColumn(){return _numColumn;}
+    unsigned int GetNumRows(){return _numRows;}
+
+
 
 protected:
 
@@ -68,6 +76,26 @@ protected:
 
    QGraphicsScene* _pScene;
 
+};
+
+
+
+//////////////////////////////////////////////////////////////////////////
+class GameOfLife : public QObject
+{
+   Q_OBJECT
+
+public:
+   GameOfLife(){}
+
+   void SetGrid(Grid* pGrid);
+
+   void Step();
+
+protected:
+
+   QPointer<Grid> _pGrid;
+   std::vector<int> _cells;
 };
 
 #endif

@@ -142,7 +142,7 @@
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
-         <widget class="QPushButton" name="pushButton_3">
+         <widget class="QPushButton" name="gol_step">
           <property name="text">
            <string>Step</string>
           </property>
@@ -173,7 +173,7 @@
          </widget>
         </item>
        </layout>
-       <zorder>pushButton_3</zorder>
+       <zorder>gol_step</zorder>
        <zorder>pushButton_4</zorder>
        <zorder>label_2</zorder>
        <zorder>label_3</zorder>

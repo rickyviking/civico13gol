@@ -47,6 +47,8 @@ public:
       void normalSize();
       void fitToWindow();
 
+      void step();
+
 private:
 
 #ifndef QT_NO_PRINTER
@@ -57,10 +59,14 @@ private:
    QGraphicsScene* _pScene;
    QGraphicsView* _pGraphicsView;
 
-   Grid* _pGrid;
+   QPointer<Grid> _pGrid;
+
+   QPointer<GameOfLife> _pGOL;
 
    // main win from designer
    Ui::MainWindow* _pMainWindow;
+
+
 };
 
 

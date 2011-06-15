@@ -18,6 +18,9 @@ GridScene::GridScene() :
 //////////////////////////////////////////////////////////////////////////
 void GridScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+   if (event->button() != Qt::RightButton)
+      return;
+
    QGraphicsItem* pItem = itemAt(event->scenePos());
    Cell* pCell = dynamic_cast<Cell*>(pItem);
    if (!pCell != NULL)
@@ -40,11 +43,8 @@ void GridScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
          pCell->_state = 0;
    }
 
-
-
-
    pCell->update();
-
+   //update(sceneRect());
 }
 
 //////////////////////////////////////////////////////////////////////////
