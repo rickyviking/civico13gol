@@ -92,6 +92,8 @@ public:
 
    void Step();
 
+   void ApplyGolRule( Cell* pCell, unsigned int neighbors, unsigned cellIdx );
+
 protected:
 
    QPointer<Grid> _pGrid;
