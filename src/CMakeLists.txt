@@ -34,7 +34,7 @@ INCLUDE_DIRECTORIES(${QT_INCLUDE_DIR}
 # qt process stuffs
 qt4_wrap_cpp(MOC_SOURCES ${civico13golApp_HDRS})
 #QT4_ADD_RESOURCES(RCC_SOURCES resources/itCLientQt.qrc)
-#QT4_WRAP_UI(UI_SOURCES civico13gol.ui)
+#QT4_WRAP_UI(UI_SOURCES GOL.ui)
 
 
 

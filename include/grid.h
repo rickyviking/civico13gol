@@ -2,8 +2,13 @@
 #ifndef CIVICO13_GOL_H
 #define CIVICO13_GOL_H
 
+// Qt
 #include <QtGui/QGraphicsWidget>
 #include <QtGui/QtGui>
+
+// stl
+#include <iostream>
+
 
 //////////////////////////////////////////////////////////////////////////
 class Cell : public QGraphicsWidget
@@ -13,6 +18,8 @@ public:
    Cell() :
       _alive(false)
       {
+         //setAcceptHoverEvents(true);
+         setAcceptedMouseButtons(Qt::RightButton);
       }
 
       void paint(QPainter *painter, const QStyleOptionGraphicsItem *,
@@ -28,8 +35,16 @@ public:
 
       void mousePressEvent(QGraphicsSceneMouseEvent *event)
       {
-         _alive = !_alive;
-         update();
+         if (event->button() == Qt::RightButton)
+         {
+            _alive = !_alive;
+            update();
+         }
+      }
+
+      void hoverEnterEvent(QGraphicsSceneDragDropEvent *event)
+      {
+         std::cout << "hover!" << std::endl;
       }
 
       bool _alive;

@@ -5,6 +5,9 @@
 // civico13gol
 #include <grid.h>
 
+// UI generated file
+//#include <ui_GOL.h>
+
 
 // Qt
 #include <QtGui/QMainWindow>
@@ -87,6 +90,10 @@ private:
    QGraphicsView* _pGraphicsView;
 
    Grid* _pGrid;
+
+
+//   Ui::MainWindow* _pMainWindow;
+
 };
 //! [0]
 
