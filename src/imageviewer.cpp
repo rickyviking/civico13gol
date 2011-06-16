@@ -25,6 +25,7 @@ ImageViewer::ImageViewer() :
 
    connect(_pMainWindow->actionReload_Grid, SIGNAL(triggered()), this, SLOT(reloadGrid()));
 
+   connect(_pMainWindow->actionSave_Image_Grid_Only, SIGNAL(triggered()), this, SLOT(saveImageGridOnly()));
    connect(_pMainWindow->actionSave_Image, SIGNAL(triggered()), this, SLOT(saveImage()));
    connect(_pMainWindow->actionExport_Life_History, SIGNAL(triggered()), this, SLOT(exportLifeHistory()));
 
@@ -256,7 +257,7 @@ void ImageViewer::loadGrid()
 }
 
 //////////////////////////////////////////////////////////////////////////
-void ImageViewer::saveImage()
+void ImageViewer::saveImageGridOnly()
 {
    QString fileName = QFileDialog::getSaveFileName(this,
                                                    tr("Save File"), 
@@ -267,10 +268,10 @@ void ImageViewer::saveImage()
       return;
    }
 
-   fileName.append("png");
+   fileName.append(".png");
 
-//    if (_pImageItem != NULL)
-//       _pImageItem->setVisible(false);   
+   if (_pImageItem != NULL)
+      _pImageItem->setVisible(false);   
 
    QImage img(_pScene->sceneRect().width(),_pScene->sceneRect().height(),QImage::Format_ARGB32_Premultiplied);
    QPainter p(&img);
@@ -278,8 +279,8 @@ void ImageViewer::saveImage()
    p.end();
    img.save(fileName);
 
-//    if (_pImageItem != NULL)
-//       _pImageItem->setVisible(true);
+   if (_pImageItem != NULL)
+      _pImageItem->setVisible(true);
 
 }
 
@@ -329,5 +330,28 @@ void ImageViewer::play()
 void ImageViewer::pause()
 {
    _timer.stop();
+}
+
+//////////////////////////////////////////////////////////////////////////
+void ImageViewer::saveImage()
+{
+   QString fileName = QFileDialog::getSaveFileName(this,
+      tr("Save File"), 
+      QDir::currentPath());
+   if (fileName.isEmpty()) 
+   { 
+      std::cout << "Cannot save to an empty filename!" << std::endl;
+      return;
+   }
+
+   fileName.append(".png");
+
+
+   QImage img(_pScene->sceneRect().width(),_pScene->sceneRect().height(),QImage::Format_ARGB32_Premultiplied);
+   QPainter p(&img);
+   _pScene->render(&p);
+   p.end();
+   img.save(fileName);
+
 }
 

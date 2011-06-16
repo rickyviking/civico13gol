@@ -57,6 +57,7 @@ public:
 
 
       void saveImage();
+      void saveImageGridOnly();
       void exportLifeHistory();
 
       void step();
