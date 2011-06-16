@@ -55,7 +55,9 @@ void Grid::ResetGrid()
 
 //////////////////////////////////////////////////////////////////////////
 Grid::Grid( QGraphicsScene* pScene ) :
-   _pScene(pScene)
+   _pScene(pScene),
+   _numColumn(0),
+   _numRows(0)
 {
 
 }
@@ -148,6 +150,8 @@ void GameOfLife::SetGrid( Grid* pGrid )
    _pGrid = pGrid;
    _cells.clear();
    _cells.resize(_pGrid->GetNumColumn() * _pGrid->GetNumRows());
+
+   ResetHistory();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -464,4 +468,17 @@ void GameOfLife::ApplyGolRule( Cell* pCell, unsigned int neighbors, unsigned cel
 void GameOfLife::ResetHistory()
 {
    _lifeHistory.clear();
+}
+
+//////////////////////////////////////////////////////////////////////////
+void GameOfLife::ExportHistory( const std::string& fileName )
+{
+   std::ofstream fileOut(fileName.c_str());
+
+   fileOut << "number of generations: " << _lifeHistory.size() << std::endl;
+   
+   for ( unsigned int i=0; i<_lifeHistory.size(); ++i)
+      fileOut << i << "\t" << _lifeHistory[i] << std::endl;
+
+   fileOut.close();
 }
