@@ -32,6 +32,11 @@ ImageViewer::ImageViewer() :
    connect(_pMainWindow->createGrid, SIGNAL(pressed()), this, SLOT(createGrid()));
    connect(_pMainWindow->clearGrid, SIGNAL(pressed()), this, SLOT(resetGrid()));
 
+   connect(_pMainWindow->playButton, SIGNAL(pressed()), this, SLOT(play()));
+   connect(_pMainWindow->pauseButton, SIGNAL(pressed()), this, SLOT(pause()));
+
+   connect(&_timer, SIGNAL(timeout()), this, SLOT(step()));
+
 
 
    // connect GOL step
@@ -309,6 +314,20 @@ void ImageViewer::exportLifeHistory()
 
 }
 
+//////////////////////////////////////////////////////////////////////////
+void ImageViewer::play()
+{
+   if (_timer.isActive())
+      return;
 
+   // TODO read from interface
+   _timer.setInterval(_pMainWindow->timeInterval->value());
+   _timer.start();
+}
 
-//! [26]
+//////////////////////////////////////////////////////////////////////////
+void ImageViewer::pause()
+{
+   _timer.stop();
+}
+

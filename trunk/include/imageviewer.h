@@ -15,6 +15,7 @@
 #include <QtGui/QtGui>
 
 #include <QtCore/QPointer>
+#include <QtCore/QTimer>
 
 
 QT_BEGIN_NAMESPACE
@@ -60,6 +61,9 @@ public:
 
       void step();
 
+      void play();
+      void pause();
+
 private:
 
 #ifndef QT_NO_PRINTER
@@ -80,6 +84,9 @@ private:
    Ui::MainWindow* _pMainWindow;
 
    QString _lastFilename;
+
+   bool _pause;
+   QTimer _timer;   
 
 
 };

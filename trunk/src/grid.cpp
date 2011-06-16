@@ -158,7 +158,7 @@ void GameOfLife::SetGrid( Grid* pGrid )
 void GameOfLife::Step()
 {
 
-   std::cout << "stepping...";
+   //std::cout << "stepping...";
 
 
    unsigned int numRows = _pGrid->GetNumRows();
@@ -435,7 +435,7 @@ void GameOfLife::Step()
    _lifeHistory.push_back(_aliveCounter);
 
 
-   std::cout << " done!" << std::endl;
+   //std::cout << " done!" << std::endl;
 
 }
 
