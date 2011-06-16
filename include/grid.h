@@ -102,6 +102,8 @@ public:
    const LifeHistory& GetLifeHistory() const { return _lifeHistory; }
    void ResetHistory();
 
+   void ExportHistory(const std::string& fileName);
+
 protected:
 
    void ApplyGolRule( Cell* pCell, unsigned int neighbors, unsigned cellIdx );

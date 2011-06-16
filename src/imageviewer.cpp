@@ -9,7 +9,8 @@
 #include <sstream>
 
 
-ImageViewer::ImageViewer()
+ImageViewer::ImageViewer() :
+   _pImageItem(NULL)
 {
    // create main window
    _pMainWindow = new Ui::MainWindow;
@@ -21,6 +22,11 @@ ImageViewer::ImageViewer()
 
    connect(_pMainWindow->actionSave_Grid, SIGNAL(triggered()), this, SLOT(saveGrid()));
    connect(_pMainWindow->actionLoad_Grid, SIGNAL(triggered()), this, SLOT(loadGrid()));
+
+   connect(_pMainWindow->actionReload_Grid, SIGNAL(triggered()), this, SLOT(reloadGrid()));
+
+   connect(_pMainWindow->actionSave_Image, SIGNAL(triggered()), this, SLOT(saveImage()));
+   connect(_pMainWindow->actionExport_Life_History, SIGNAL(triggered()), this, SLOT(exportLifeHistory()));
 
    // connect grid buttons
    connect(_pMainWindow->createGrid, SIGNAL(pressed()), this, SLOT(createGrid()));
@@ -67,6 +73,7 @@ ImageViewer::ImageViewer()
    _pGrid = new Grid(_pScene);
    // create also a GOL instance
    _pGOL = new GameOfLife;
+   _pGOL->SetGrid(_pGrid);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -83,14 +90,21 @@ void ImageViewer::open()
             tr("Cannot load %1.").arg(fileName));
          return;
       }
-      
-      QGraphicsPixmapItem* pImageItem = new QGraphicsPixmapItem;
-      pImageItem->setPixmap(QPixmap::fromImage(image));
-      // use 0 as background level...
-      pImageItem->setZValue(-1);
-      _pScene->addItem(pImageItem);
 
-      _pScene->setSceneRect(pImageItem->boundingRect());
+      // remove old image if any
+      if (_pImageItem != NULL)
+      {
+         _pScene->removeItem(_pImageItem);
+         delete _pImageItem;
+      }
+      
+      _pImageItem = new QGraphicsPixmapItem;
+      _pImageItem->setPixmap(QPixmap::fromImage(image));
+      // use 0 as background level...
+      _pImageItem->setZValue(-1);
+      _pScene->addItem(_pImageItem);
+
+      _pScene->setSceneRect(_pImageItem->boundingRect());
    }
 }
 
@@ -127,8 +141,8 @@ void ImageViewer::createGrid()
 
    unsigned int numCol = _pMainWindow->numColBox->value();
    _pGrid->CreateGrid(numCol);
-
    _pGOL->SetGrid(_pGrid);
+
 }
 
 
@@ -137,6 +151,7 @@ void ImageViewer::resetGrid()
 {
    std::cout << "reset the grid"<< std::endl;
    _pGrid->ResetGrid();
+   _pGOL->SetGrid(_pGrid);
 
 }
 
@@ -194,6 +209,7 @@ void ImageViewer::step()
 
    std::stringstream ss;
    unsigned int gen = lifeHistory.size() -1;
+
    ss << gen;
    _pMainWindow->genCounter->setText(QString::fromStdString(ss.str()));
     std::stringstream ss2;
@@ -224,8 +240,72 @@ void ImageViewer::loadGrid()
    if (!fileName.isEmpty()) 
    {
       _pGrid->LoadFromFile(fileName.toStdString());
+      _pGOL->SetGrid(_pGrid);
+      // reset history counter
+      _pMainWindow->genCounter->setText("0");
+      _pMainWindow->aliveCounter->setText("0");
     
+      _lastFilename= fileName;
    }
+
+}
+
+//////////////////////////////////////////////////////////////////////////
+void ImageViewer::saveImage()
+{
+   QString fileName = QFileDialog::getSaveFileName(this,
+                                                   tr("Save File"), 
+                                                   QDir::currentPath());
+   if (fileName.isEmpty()) 
+   { 
+      std::cout << "Cannot save to an empty filename!" << std::endl;
+      return;
+   }
+
+   fileName.append("png");
+
+//    if (_pImageItem != NULL)
+//       _pImageItem->setVisible(false);   
+
+   QImage img(_pScene->sceneRect().width(),_pScene->sceneRect().height(),QImage::Format_ARGB32_Premultiplied);
+   QPainter p(&img);
+   _pScene->render(&p);
+   p.end();
+   img.save(fileName);
+
+//    if (_pImageItem != NULL)
+//       _pImageItem->setVisible(true);
+
+}
+
+//////////////////////////////////////////////////////////////////////////
+void ImageViewer::reloadGrid()
+{
+   if (!_lastFilename.isEmpty()) 
+   {
+      _pGrid->LoadFromFile(_lastFilename.toStdString());
+      _pGOL->SetGrid(_pGrid);
+      // reset history counter
+      _pMainWindow->genCounter->setText("0");
+      _pMainWindow->aliveCounter->setText("0");
+   }
+
+}
+
+//////////////////////////////////////////////////////////////////////////
+void ImageViewer::exportLifeHistory()
+{
+
+   QString fileName = QFileDialog::getSaveFileName(this,
+                                                   tr("Save File"), 
+                                                   QDir::currentPath());
+   if (fileName.isEmpty()) 
+   { 
+      std::cout << "Cannot save to an empty filename!" << std::endl;
+      return;
+   }
+
+   _pGOL->ExportHistory(fileName.toStdString());
 
 }
 

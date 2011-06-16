@@ -14,6 +14,8 @@
 #include <QtGui/QPrinter>
 #include <QtGui/QtGui>
 
+#include <QtCore/QPointer>
+
 
 QT_BEGIN_NAMESPACE
 class QAction;
@@ -47,8 +49,14 @@ public:
       void saveGrid();
       void loadGrid();
 
+      void reloadGrid();
+
       void normalSize();
       void fitToWindow();
+
+
+      void saveImage();
+      void exportLifeHistory();
 
       void step();
 
@@ -62,12 +70,16 @@ private:
    QGraphicsScene* _pScene;
    QGraphicsView* _pGraphicsView;
 
+   QGraphicsPixmapItem* _pImageItem;
+
    QPointer<Grid> _pGrid;
 
    QPointer<GameOfLife> _pGOL;
 
    // main win from designer
    Ui::MainWindow* _pMainWindow;
+
+   QString _lastFilename;
 
 
 };
