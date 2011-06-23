@@ -33,15 +33,16 @@ ImageViewer::ImageViewer() :
    connect(_pMainWindow->createGrid, SIGNAL(pressed()), this, SLOT(createGrid()));
    connect(_pMainWindow->clearGrid, SIGNAL(pressed()), this, SLOT(resetGrid()));
 
+
+   // connect GOL step
+   connect(_pMainWindow->markPathCheckBox, SIGNAL(clicked()), this, SLOT(markPath()));
+
+   connect(_pMainWindow->gol_step, SIGNAL(pressed()), this, SLOT(step()));
+
    connect(_pMainWindow->playButton, SIGNAL(pressed()), this, SLOT(play()));
    connect(_pMainWindow->pauseButton, SIGNAL(pressed()), this, SLOT(pause()));
 
    connect(&_timer, SIGNAL(timeout()), this, SLOT(step()));
-
-
-
-   // connect GOL step
-   connect(_pMainWindow->gol_step, SIGNAL(pressed()), this, SLOT(step()));
 
    
 
@@ -355,3 +356,8 @@ void ImageViewer::saveImage()
 
 }
 
+//////////////////////////////////////////////////////////////////////////
+void ImageViewer::markPath()
+{
+   _pGOL->SetUseMarkPath(_pMainWindow->markPathCheckBox->isChecked());
+}

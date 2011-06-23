@@ -60,6 +60,8 @@ public:
       void saveImageGridOnly();
       void exportLifeHistory();
 
+      void markPath();
+
       void step();
 
       void play();

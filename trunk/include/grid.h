@@ -29,6 +29,8 @@ public:
          QColor color(Qt::blue);
          if (_state == 1)
             color = Qt::yellow;
+         else if (_state == 2)
+            color = Qt::green;
          else if (_state == -1)
             color = Qt::red;
 
@@ -93,9 +95,13 @@ public:
 
    typedef std::vector<int> LifeHistory;
 
-   GameOfLife(){}
+   GameOfLife() : _markPath(false){}
 
    void SetGrid(Grid* pGrid);
+
+   // disabled by default
+   bool GetUseMarkPath() const { return _markPath; }
+   void SetUseMarkPath(bool val) { _markPath = val; }
 
    void Step();
 
@@ -114,6 +120,8 @@ protected:
 
    LifeHistory _lifeHistory;
    unsigned int _aliveCounter;
+
+   bool _markPath;   
 };
 
 #endif

@@ -443,19 +443,20 @@ void GameOfLife::Step()
 void GameOfLife::ApplyGolRule( Cell* pCell, unsigned int neighbors, unsigned cellIdx )
 {
    // now apply the GOL rule:
-   if(pCell->_state == 0)
+
+   // if dead (or path, which is the same...) check if must become alive
+   if(pCell->_state == 0 || pCell->_state == 2)
    {
       if (neighbors == 3)
          _cells[cellIdx] = 1;
-      else
-         _cells[cellIdx] = 0;
+      else 
+         _cells[cellIdx] = pCell->_state;
    }
+   // if alive, check if must die
    else if (pCell->_state == 1)
    {
-      if (neighbors < 2)
-         _cells[cellIdx] = 0;
-      else if (neighbors > 3)
-         _cells[cellIdx] = 0;
+      if (neighbors < 2 || neighbors > 3)
+         _markPath ? _cells[cellIdx] = 2 : _cells[cellIdx] = 0;
       else
          _cells[cellIdx] = 1;
    }
