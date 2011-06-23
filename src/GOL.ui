@@ -145,6 +145,13 @@
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
+         <widget class="QCheckBox" name="markPathCheckBox">
+          <property name="text">
+           <string>Mark Path</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QPushButton" name="gol_step">
           <property name="text">
            <string>Step</string>
