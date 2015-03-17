@@ -10,9 +10,9 @@
 
 
 // Qt
-#include <QtGui/QMainWindow>
-#include <QtGui/QPrinter>
-#include <QtGui/QtGui>
+#include <QtWidgets/QMainWindow>
+
+#include <QtPrintSupport/QPrinter>
 
 #include <QtCore/QPointer>
 #include <QtCore/QTimer>

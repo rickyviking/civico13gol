@@ -8,35 +8,44 @@
 # application name
 SET(civico13golApp_NAME civico13golApp)
 
-# application header path
-#SET(HEADER_PATH ${ITscape_SOURCE_DIR}/applications/${civico13golApp_NAME})
-
 # header files
 SET (civico13golApp_HDRS 
-	../include/grid.h
-	../include/gridScene.h
-	../include/imageviewer.h
-   )
+   ../include/grid.h
+   ../include/gridScene.h
+   ../include/imageviewer.h
+)
 
 # source files
 SET( civico13golApp_SRCS
-		grid.cpp
-		GridScene.cpp
-		imageviewer.cpp
-		main.cpp
-     )
+   grid.cpp
+   GridScene.cpp
+   imageviewer.cpp
+   main.cpp
+)    
      
-     
-# additional include directories
-INCLUDE_DIRECTORIES(${QT_INCLUDE_DIR}
-                    ${CMAKE_CURRENT_BINARY_DIR} # for ui*.h files
-)
 
-               
+
+
+#==============================================================================
+# Setup Qt5 stuff
+
+# Find includes in corresponding build directories
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+# Instruct CMake to run moc automatically when needed.
+set(CMAKE_AUTOMOC ON)
+
+# Find the QtWidgets library
+find_package(Qt5Widgets)
+find_package(Qt5PrintSupport)
+
+# path of the resources for the interface 
+#SET(RCC_SOURCES_PATH ${Gilgamesh_SOURCE_DIR}/applications)
+
 # qt process stuffs
-qt4_wrap_cpp(MOC_SOURCES ${civico13golApp_HDRS})
-#QT4_ADD_RESOURCES(RCC_SOURCES resources/itCLientQt.qrc)
-QT4_WRAP_UI(UI_SOURCES GOL.ui)
+#QT5_ADD_RESOURCES(RCC_SOURCES ${RCC_SOURCES_PATH}/GmResources.qrc)
+QT5_WRAP_UI(UI_SOURCES GOL.ui)
+
+#==============================================================================
 
 
 
@@ -55,9 +64,9 @@ SET_TARGET_PROPERTIES(${civico13golApp_NAME} PROPERTIES DEBUG_POSTFIX "${CMAKE_D
 
 
 SET( civico13golApp_EXT_LIBS
-# Qt libs - note: following variables are defined by the cMake routine. They contain both debug and release versions
-   ${QT_QTCORE_LIBRARY}
-   ${QT_QTGUI_LIBRARY}	
+   # Qt libs
+   Qt5::Widgets
+   Qt5::PrintSupport
 )
 
 

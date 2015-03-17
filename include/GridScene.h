@@ -3,7 +3,7 @@
 #define CIVICO13_GOL_GRID_SCENE_H
 
 // Qt
-#include <QtGui/QtGui>
+#include <QtWidgets/QGraphicsScene>
 
 // stl
 #include <iostream>

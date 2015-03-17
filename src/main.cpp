@@ -1,5 +1,5 @@
 
-#include <QtGui/QApplication>
+#include <QtCore/QCoreApplication>
 
 #include <imageviewer.h>
 

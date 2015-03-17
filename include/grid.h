@@ -3,8 +3,9 @@
 #define CIVICO13_GOL_H
 
 // Qt
-#include <QtGui/QGraphicsWidget>
-#include <QtGui/QtGui>
+#include <QtWidgets/QGraphicsWidget>
+#include <QtGui/QPainter>
+#include <QtCore/QPointer>
 
 // stl
 #include <iostream>

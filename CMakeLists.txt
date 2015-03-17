@@ -12,24 +12,12 @@ SET(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "" FORCE)
 
 PROJECT (civico13gol)
 
-# check Cmake version
-IF(WIN32)
-   CMAKE_MINIMUM_REQUIRED(VERSION 2.4.8 FATAL_ERROR)
-ELSE(WIN32)
-   IF(APPLE)
-      CMAKE_MINIMUM_REQUIRED(VERSION 2.4.8 FATAL_ERROR)
-      IF(${CMAKE_MAJOR_VERSION} EQUAL 2 AND ${CMAKE_MINOR_VERSION} EQUAL 4 AND ${CMAKE_PATCH_VERSION} LESS 7)
-         MESSAGE("Warning: A critical CMake bug exists in 2.4.6 and below. Trying to build Universal Binaries will result in a compile error that seems unrelated. Either avoid building Universal Binaries by changing the CMAKE_OSX_ARCHITECTURES field to list only your architecture, or upgrade to the current CVS version of CMake or a newer stable version if it exists.")
-      ENDIF(${CMAKE_MAJOR_VERSION} EQUAL 2 AND ${CMAKE_MINOR_VERSION} EQUAL 4 AND ${CMAKE_PATCH_VERSION} LESS 7)
-   ELSE(APPLE)
-      CMAKE_MINIMUM_REQUIRED(VERSION 2.4.8 FATAL_ERROR)
-   ENDIF(APPLE)
-ENDIF(WIN32)
-
 
 #==============================================================================
 #  General settings
 #==============================================================================
+
+CMAKE_MINIMUM_REQUIRED(VERSION 3.1.1 FATAL_ERROR)
 
 # see cmake --help-policy CMP0003 for more information
 IF(COMMAND cmake_policy)
@@ -57,62 +45,45 @@ ENDIF("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
 #==============================================================================
 # Platform specific definitions 
 #==============================================================================
-IF(WIN32)
 
-    IF(MSVC)
-        # This option is to enable the /MP switch for Visual Studio 2005 and above compilers
-        OPTION(WIN32_USE_MP "Set to ON to build OpenSceneGraph with the /MP option (Visual Studio 2005 and above)." OFF)
-        MARK_AS_ADVANCED(WIN32_USE_MP)
-        IF(WIN32_USE_MP)
-            SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
-        ENDIF(WIN32_USE_MP)
-
-        # turn off various warnings
-        # foreach(warning 4244 4251 4267 4275 4290 4786 4305 4996)
-        #     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd${warning}")
-        # endforeach(warning)
-
-        # More MSVC specific compilation flags
-        ADD_DEFINITIONS(-D_SCL_SECURE_NO_WARNINGS)
-        ADD_DEFINITIONS(-D_CRT_SECURE_NO_DEPRECATE)
-    ENDIF(MSVC)
-
-    # needed for net plugin
-    SET (OSG_SOCKET_LIBS wsock32)
-    # Both Cygwin and Msys need -DNOMINMAX ???
-    IF(UNIX)
-        ADD_DEFINITIONS(-DNOMINMAX)
-    ENDIF(UNIX)
-	
-ENDIF(WIN32)
 
 #==============================================================================
 #  Package(s) import
 #==============================================================================
 
-#Run FindQt4.cmake
-FIND_PACKAGE(Qt4 REQUIRED)
+# Look for Qt5
+SET (CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} CACHE PATH "")
+FIND_PACKAGE(Qt5Core REQUIRED)
+IF (Qt5Core_FOUND)
+   # add the path to glu32 lib for Qt
+   SET (Gilgamesh_GLU32_LIB_PATH "C:/Program Files (x86)/Windows Kits/8.0/Lib/win8/um/x86" CACHE PATH "Path to the glu32.lib file on Windows")
+   SET (Gilgamesh_USER32_LIB_PATH "C:/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Lib" CACHE PATH "Path to the user32.lib file on Windows")
+   SET (CMAKE_LIBRARY_PATH 
+         ${CMAKE_LIBRARY_PATH} 
+         ${Gilgamesh_GLU32_LIB_PATH} 
+         ${Gilgamesh_USER32_LIB_PATH} 
+   ) 
+   # make sure we also find the UIC executable, as we have some macros that need it
+   set (tmpDir ${Qt5Core_DIR}/../../../bin)
+   find_program(QT5_UIC_EXECUTABLE uic
+         DOC "The Qt5 uic executable to wrap ui files"
+         HINTS "tmpDir"
+   )
+   # needed to install Qt5 DLLs
+   set(Qt5_BIN_DIR ${Qt5Core_DIR}/../../../bin CACHE PATH "")
+   set(Qt5_PLUGINS_DIR ${Qt5Core_DIR}/../../../plugins CACHE PATH "")
+ENDIF (Qt5Core_FOUND)
+message ("Using CMAKE_LIBRARY_PATH: " ${CMAKE_LIBRARY_PATH})
+
 
 
 #==============================================================================
 #  Project include(s) folder(s)
 #==============================================================================
 INCLUDE_DIRECTORIES(
-
-	${civico13gol_SOURCE_DIR}/include/   
-
-	#defined in FindQt4.cmake
-	${QT_INCLUDE_DIR}		#QT headers
+   ${civico13gol_SOURCE_DIR}/include
 )
 
-#==============================================================================
-#  Project librarie(s) folder(s)
-#==============================================================================
-LINK_DIRECTORIES(
-
-	#defined in FindQt4.cmake
-	${QT_LIBRARY_DIR}		#QT libraries
-)
 
 
 #==============================================================================

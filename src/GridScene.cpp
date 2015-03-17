@@ -3,6 +3,9 @@
 #include <GridScene.h>
 #include <grid.h>
 
+// qt
+#include <QtWidgets/QGraphicsSceneMouseEvent>
+
 // stl
 #include <iostream>
 
@@ -21,7 +24,7 @@ void GridScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
    if (event->button() != Qt::RightButton)
       return;
 
-   QGraphicsItem* pItem = itemAt(event->scenePos());
+   QGraphicsItem* pItem = itemAt(event->scenePos(), QTransform());
    Cell* pCell = dynamic_cast<Cell*>(pItem);
    if (!pCell != NULL)
       return;

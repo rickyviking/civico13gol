@@ -3,8 +3,11 @@
 // @author: Riccardo Corsi
 //////////////////////////////////////////////////////////////////////////\
 
-
+// civico
 #include <grid.h>
+
+// qt
+#include <QtWidgets/QGraphicsScene>
 
 // stl
 #include <iostream>

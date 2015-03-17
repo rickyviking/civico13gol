@@ -3,7 +3,10 @@
 #include <GridScene.h>
 
 // Qt
-#include <QtGui/QtGui>
+#include <QtWidgets/QFileDialog>
+#include <QtWidgets/QGraphicsView>
+#include <QtWidgets/QMessageBox>
+#include <QtCore/QtMath>
 
 // stl
 #include <sstream>
